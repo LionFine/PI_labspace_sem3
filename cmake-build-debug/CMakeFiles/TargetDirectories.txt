@@ -1,3 +1,0 @@
-C:/LionFine/C++/PI_labspace/lab1.2/cmake-build-debug/CMakeFiles/lab1_2.dir
-C:/LionFine/C++/PI_labspace/lab1.2/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/LionFine/C++/PI_labspace/lab1.2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

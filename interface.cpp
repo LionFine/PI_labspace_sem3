@@ -1,6 +1,6 @@
 #include "interface.h"
 #include "LinkedList.h"  // Используем LinkedList
-#include "test.h"        // Подключаем ваши тесты
+#include "test.cpp"        // Подключаем ваши тесты
 #include "displayCharts.h"
 #include <iostream>
 #include <random>
