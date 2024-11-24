@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "interface.cpp"
 
 int main() {
     run_interface();
