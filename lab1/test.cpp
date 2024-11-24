@@ -7,7 +7,6 @@
 #include <memory>
 #include <fstream>
 #include <iomanip>
-#include <functional>
 
 void TestAppend() {
     LinkedList<int> list;
@@ -48,32 +47,32 @@ void TestGetSubsequence() {
     list.Append(10);
     list.Append(20);
     list.Append(30);
-    LinkedList<int>* sublist = dynamic_cast<LinkedList<int>*>(list.GetSubsequence(1, 2));
+    SmrtPtr<Sequence<int>> subseq = list.GetSubsequence(1, 2);
+    LinkedList<int>* sublist = dynamic_cast<LinkedList<int>*>(subseq.get());
     if (sublist && sublist->GetLength() == 2 && sublist->Get(0) == 20 && sublist->Get(1) == 30) {
         std::cout << "TestGetSubsequence passed.\n";
     } else {
         std::cout << "TestGetSubsequence failed.\n";
     }
-    delete sublist;
 }
+
 
 void TestConcat() {
     LinkedList<int> list1;
     list1.Append(10);
     list1.Append(20);
-
     LinkedList<int> list2;
     list2.Append(30);
     list2.Append(40);
-
-    LinkedList<int>* result = dynamic_cast<LinkedList<int>*>(list1.Concat(&list2));
+    SmrtPtr<Sequence<int>> concatResult = list1.Concat(&list2);
+    LinkedList<int>* result = dynamic_cast<LinkedList<int>*>(concatResult.get());
     if (result && result->GetLength() == 4 && result->Get(2) == 30 && result->Get(3) == 40) {
         std::cout << "TestConcat passed.\n";
     } else {
         std::cout << "TestConcat failed.\n";
     }
-    delete result;
 }
+
 
 void TestExceptions() {
     LinkedList<int> list;

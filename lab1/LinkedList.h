@@ -4,8 +4,7 @@
 #include "Sequence.h"
 #include "SmrtPtr.h"
 #include <stdexcept>
-
-
+ко
 template <typename T>
 class LinkedList : public Sequence<T> {
 private:
@@ -82,13 +81,13 @@ public:
         return current->value;
     }
 
-    Sequence<T>* GetSubsequence(int startIndex, int endIndex) const override {
+    SmrtPtr<Sequence<T>> GetSubsequence(int startIndex, int endIndex) const override {
         if (startIndex < 0 || endIndex >= length || startIndex > endIndex) {
             throw std::out_of_range("Invalid indices in GetSubsequence");
         }
-        LinkedList<T>* sub = new LinkedList<T>();
+        SmrtPtr<LinkedList<T>> sub(new LinkedList<T>());
         SmrtPtr<Node> current = head;
-        for (int i = 0; i < endIndex + 1; ++i) {
+        for (int i = 0; i <= endIndex; ++i) {
             if (i >= startIndex) {
                 sub->Append(current->value);
             }
@@ -158,19 +157,22 @@ public:
         current->value = item;
     }
 
-    Sequence<T>* Concat(Sequence<T> *list) const override {
+    SmrtPtr<Sequence<T>> Concat(const Sequence<T>* list) const override {
         if (!list) {
             throw std::invalid_argument("Concat: list is nullptr");
         }
-        LinkedList<T>* result = new LinkedList<T>(*this); // Копируем текущий список
+        SmrtPtr<LinkedList<T>> result(new LinkedList<T>());
+        SmrtPtr<Node> current = head;
+        while (current) {
+            result->Append(current->value);
+            current = current->next;
+        }
         for (int i = 0; i < list->GetLength(); ++i) {
             result->Append(list->Get(i));
         }
         return result;
     }
+
 };
-
-// Concat + GetSubsequence на умных
-
 
 #endif // LINKEDLIST_H
