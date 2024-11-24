@@ -28,34 +28,22 @@ public:
         other.length = 0;
     }
 
-    // Оператор присваивания копированием
-    // head = other.head
-    // tail = other.tail
-    // length = other.length
 
     LinkedList& operator=(const LinkedList& other) {
         if (this != &other) {
-            SmrtPtr<Node> new_node = new Node;
-            new_node = other.head;
-            head = new_node;
-
-            SmrtPtr<Node> current1 = other.head.next;
-
-            while(current1 != tail) {
-                SmrtPtr<Node> node = new Node;
-                SmrtPtr<Node> help = node;
-                node = current1;
-                current1 = current1.next;
-
+            if (!other.head) {
+                return *this;
             }
-            tail = other.tail;
-            length = other.length;
+            SmrtPtr<Node> current = other.head;
+            while (current) {
+                this->Append(current->value);
+                current = current->next;
+            }
         }
         return *this;
     }
 
 
-    // Оператор присваивания перемещением
     LinkedList& operator=(LinkedList&& other)  {
         if (this != &other) {
             head = std::move(other.head);
@@ -183,6 +171,6 @@ public:
 };
 
 // Concat + GetSubsequence на умных
-// копирование
+
 
 #endif // LINKEDLIST_H
