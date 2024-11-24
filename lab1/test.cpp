@@ -58,21 +58,24 @@ void TestGetSubsequence() {
 
 
 void TestConcat() {
-    LinkedList<int> list1;
-    list1.Append(10);
-    list1.Append(20);
-    LinkedList<int> list2;
-    list2.Append(30);
-    list2.Append(40);
-    SmrtPtr<Sequence<int>> concatResult = list1.Concat(&list2);
-    LinkedList<int>* result = dynamic_cast<LinkedList<int>*>(concatResult.get());
-    if (result && result->GetLength() == 4 && result->Get(2) == 30 && result->Get(3) == 40) {
+    SmrtPtr<LinkedList<int>> list1(new LinkedList<int>());
+    list1->Append(10);
+    list1->Append(20);
+    SmrtPtr<LinkedList<int>> list2(new LinkedList<int>());
+    list2->Append(30);
+    list2->Append(40);
+    SmrtPtr<Sequence<int>> concatResult = list1->Concat(list2);
+
+    if (concatResult->GetLength() == 4 &&
+        concatResult->Get(0) == 10 &&
+        concatResult->Get(1) == 20 &&
+        concatResult->Get(2) == 30 &&
+        concatResult->Get(3) == 40) {
         std::cout << "TestConcat passed.\n";
     } else {
         std::cout << "TestConcat failed.\n";
     }
 }
-
 
 void TestExceptions() {
     LinkedList<int> list;
@@ -120,7 +123,6 @@ double measureExecutionTime(const std::function<void()>& func) {
     std::chrono::duration<double, std::milli> elapsed = end - start;
     return elapsed.count();
 }
-
 
 void printPerformanceResults(
         const std::vector<int>& elementCounts,

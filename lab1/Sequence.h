@@ -14,7 +14,7 @@ public:
     virtual void Prepend(const T &item) = 0;
     virtual void InsertAt(const T &item, int index) = 0;
     virtual void Set(int index, const T &item) = 0;
-    virtual SmrtPtr<Sequence<T>> Concat(const Sequence<T>* list) const = 0;
+    virtual SmrtPtr<Sequence<T>> Concat(const SmrtPtr<Sequence<T>>& list) const = 0;
     virtual ~Sequence() {}
 };
 

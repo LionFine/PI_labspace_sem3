@@ -21,7 +21,16 @@ private:
 public:
     LinkedList() : head(nullptr), tail(nullptr), length(0) {}
 
-    LinkedList(const LinkedList& other) : head(other.head), tail(other.tail), length(other.length) {}
+    LinkedList(const LinkedList& other) : head(nullptr), tail(nullptr), length(0) {
+        if (!other.head) {
+            return;
+        }
+        SmrtPtr<Node> current = other.head;
+        while (current) {
+            this->Append(current->value);
+            current = current->next;
+        }
+    }
 
     LinkedList(LinkedList&& other) noexcept : head(std::move(other.head)), tail(std::move(other.tail)), length(other.length) {
         other.length = 0;
@@ -157,7 +166,7 @@ public:
         current->value = item;
     }
 
-    SmrtPtr<Sequence<T>> Concat(const Sequence<T>* list) const override {
+    SmrtPtr<Sequence<T>> Concat(const SmrtPtr<Sequence<T>>& list) const override {
         if (!list) {
             throw std::invalid_argument("Concat: list is nullptr");
         }
