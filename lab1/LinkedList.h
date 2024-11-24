@@ -4,7 +4,7 @@
 #include "Sequence.h"
 #include "SmrtPtr.h"
 #include <stdexcept>
-ко
+
 template <typename T>
 class LinkedList : public Sequence<T> {
 private:
