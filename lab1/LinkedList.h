@@ -166,7 +166,7 @@ public:
         current->value = item;
     }
 
-    SmrtPtr<Sequence<T>> Concat(SmrtPtr<Sequence<T>>& list) const override {
+    SmrtPtr<Sequence<T>> Concat(SmrtPtr<Sequence<T>> list) const override {
         if (!list) {
             throw std::invalid_argument("Concat: list is nullptr");
         }
@@ -181,6 +181,7 @@ public:
         }
         return result;
     }
+
 
 };
 
