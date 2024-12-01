@@ -182,6 +182,17 @@ public:
         return result;
     }
 
+    T& GetRef(int index) override {
+        if (index < 0 || index >= length) {
+            throw std::out_of_range("Index out of range in GetRef");
+        }
+        SmrtPtr<Node> current = head;
+        for (int i = 0; i < index; ++i) {
+            current = current->next;
+        }
+        return current->value;
+    }
+
 
 };
 

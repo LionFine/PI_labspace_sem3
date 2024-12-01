@@ -4,10 +4,12 @@
 #include "GeneratorsForTest.h"
 #include "MergeSorter.h"
 #include "QuickSorter.h"
+#include "HeapSort.h"
+#include "ShellSorter.h"
 #include "PersonComparators.h"
 
 void RunTests(const std::vector<std::string>& firstNames, const std::vector<std::string>& lastNames) {
-    const std::vector<int> sizes = {14, 500, 5000};
+    const std::vector<int> sizes = {14, 50, 150};
     const Person templatePerson("John", "Doe", 1990, 180.0, 75.0);
 
     std::ofstream resultsFile("results.txt");
@@ -24,6 +26,8 @@ void RunTests(const std::vector<std::string>& firstNames, const std::vector<std:
 
         SmrtPtr<ISorter<Person>> mergeSorter(new MergeSorter<Person>());
         SmrtPtr<ISorter<Person>> quickSorter(new QuickSorter<Person>());
+        SmrtPtr<ISorter<Person>> heapSorter(new HeapSorter<Person>());
+        SmrtPtr<ISorter<Person>> shellSorter(new ShellSorter<Person>());
 
         for (int field = 1; field <= 5; ++field) {
             int (*cmp)(const Person&, const Person&) = nullptr;
@@ -57,7 +61,6 @@ void RunTests(const std::vector<std::string>& firstNames, const std::vector<std:
 
             // Test QuickSort
             start = std::chrono::high_resolution_clock::now();
-
             quickSorter->Sort(randomList, cmp);
             end = std::chrono::high_resolution_clock::now();
             elapsed = end - start;
@@ -74,6 +77,44 @@ void RunTests(const std::vector<std::string>& firstNames, const std::vector<std:
             end = std::chrono::high_resolution_clock::now();
             elapsed = end - start;
             resultsFile << "QuickSort," << fieldName << ",Identical," << size << "," << elapsed.count() << "\n";
+
+            //тест heap
+            start = std::chrono::high_resolution_clock::now();
+            heapSorter->Sort(randomList, cmp);
+            end = std::chrono::high_resolution_clock::now();
+            elapsed = end - start;
+            resultsFile << "HeapSort," << fieldName << ",Random," << size << "," << elapsed.count() << "\n";
+
+            start = std::chrono::high_resolution_clock::now();
+            heapSorter->Sort(descendingList, cmp);
+            end = std::chrono::high_resolution_clock::now();
+            elapsed = end - start;
+            resultsFile << "HeapSort," << fieldName << ",Descending," << size << "," << elapsed.count() << "\n";
+
+            start = std::chrono::high_resolution_clock::now();
+            heapSorter->Sort(identicalList, cmp);
+            end = std::chrono::high_resolution_clock::now();
+            elapsed = end - start;
+            resultsFile << "HeapSort," << fieldName << ",Identical," << size << "," << elapsed.count() << "\n";
+
+            //тест ShellSort
+            start = std::chrono::high_resolution_clock::now();
+            shellSorter->Sort(randomList, cmp);
+            end = std::chrono::high_resolution_clock::now();
+            elapsed = end - start;
+            resultsFile << "ShellSort," << fieldName << ",Random," << size << "," << elapsed.count() << "\n";
+
+            start = std::chrono::high_resolution_clock::now();
+            shellSorter->Sort(descendingList, cmp);
+            end = std::chrono::high_resolution_clock::now();
+            elapsed = end - start;
+            resultsFile << "ShellSort," << fieldName << ",Descending," << size << "," << elapsed.count() << "\n";
+
+            start = std::chrono::high_resolution_clock::now();
+            shellSorter->Sort(identicalList, cmp);
+            end = std::chrono::high_resolution_clock::now();
+            elapsed = end - start;
+            resultsFile << "ShellSort," << fieldName << ",Identical," << size << "," << elapsed.count() << "\n";
 
             resultsFile << "\n";
         }

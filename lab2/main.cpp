@@ -3,6 +3,8 @@
 #include <string>
 #include "MergeSorter.h"
 #include "QuickSorter.h"
+#include "HeapSort.h"
+#include "ShellSorter.h"
 #include "Person.h"
 #include "PersonComparators.h"
 #include "PersonHelper.h"
@@ -46,11 +48,22 @@ void ManualSorting() {
         writePersonData("unsorted_people.csv", randomPeople);
 
         int sortType;
-        std::cout << "Choose the sorting method:\n1. MergeSort\n2. QuickSort\nYour choice: ";
+        std::cout << "Choose the sorting method:\n"
+                     "1. MergeSort\n"
+                     "2. QuickSort\n"
+                     "3. HeapSort\n"
+                     "4. ShellSort\n"
+                     "Your choice: ";
         std::cin >> sortType;
 
         int fieldChoice;
-        std::cout << "Choose the field to sort by:\n1. FirstName\n2. LastName\n3. BirthYear\n4. Height\n5. Weight\nYour choice: ";
+        std::cout << "Choose the field to sort by:\n"
+                     "1. FirstName\n"
+                     "2. LastName\n"
+                     "3. BirthYear\n"
+                     "4. Height\n"
+                     "5. Weight\n"
+                     "Your choice: ";
         std::cin >> fieldChoice;
 
         SmrtPtr<ISorter<Person>> sorter;
@@ -59,12 +72,16 @@ void ManualSorting() {
             sorter = SmrtPtr<ISorter<Person>>(new MergeSorter<Person>());
         } else if (sortType == 2) {
             sorter = SmrtPtr<ISorter<Person>>(new QuickSorter<Person>());
+        } else if (sortType == 3) {
+            sorter = SmrtPtr<ISorter<Person>>(new HeapSorter<Person>());
+        } else if (sortType == 4) {
+            sorter = SmrtPtr<ISorter<Person>>(new ShellSorter<Person>());
         } else {
             std::cerr << "Invalid sorting method choice\n";
             return;
         }
 
-        int (*cmp)(const Person&, const Person&) = nullptr;
+        int (*cmp)(const Person&, const Person&);
         switch (fieldChoice) {
             case 1: cmp = CompareByFirstName; break;
             case 2: cmp = CompareByLastName; break;
@@ -86,6 +103,7 @@ void ManualSorting() {
         std::cerr << "Error: " << e.what() << "\n";
     }
 }
+
 
 
 int main() {
