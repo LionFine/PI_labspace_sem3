@@ -9,7 +9,7 @@
 #include "PersonComparators.h"
 
 void RunTests(const std::vector<std::string>& firstNames, const std::vector<std::string>& lastNames) {
-    const std::vector<int> sizes = {14, 50, 150};
+    const std::vector<int> sizes = {14, 50, 151};
     const Person templatePerson("John", "Doe", 1990, 180.0, 75.0);
 
     std::ofstream resultsFile("results.txt");
