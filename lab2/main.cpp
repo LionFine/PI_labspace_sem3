@@ -2,9 +2,7 @@
 #include <vector>
 #include <string>
 #include "MergeSorter.h"
-#include "QuickSorter.h"
 #include "HeapSort.h"
-#include "ShellSorter.h"
 #include "Person.h"
 #include "PersonComparators.h"
 #include "PersonHelper.h"
@@ -50,9 +48,9 @@ void ManualSorting() {
         int sortType;
         std::cout << "Choose the sorting method:\n"
                      "1. MergeSort\n"
-                     "2. QuickSort\n"
-                     "3. HeapSort\n"
-                     "4. ShellSort\n"
+
+                     "2. HeapSort\n"
+
                      "Your choice: ";
         std::cin >> sortType;
 
@@ -71,11 +69,7 @@ void ManualSorting() {
         if (sortType == 1) {
             sorter = SmrtPtr<ISorter<Person>>(new MergeSorter<Person>());
         } else if (sortType == 2) {
-            sorter = SmrtPtr<ISorter<Person>>(new QuickSorter<Person>());
-        } else if (sortType == 3) {
             sorter = SmrtPtr<ISorter<Person>>(new HeapSorter<Person>());
-        } else if (sortType == 4) {
-            sorter = SmrtPtr<ISorter<Person>>(new ShellSorter<Person>());
         } else {
             std::cerr << "Invalid sorting method choice\n";
             return;

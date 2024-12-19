@@ -11,14 +11,12 @@ private:
     void heapSort(SmrtPtr<Sequence<T>> seq, int (*cmp)(const T&, const T&)) {
         int n = seq->GetLength();
 
-        // Построение кучи
         for (int i = n / 2 - 1; i >= 0; --i) {
             heapify(seq, n, i, cmp);
         }
 
-        // Извлечение элементов из кучи
         for (int i = n - 1; i > 0; --i) {
-            // Меняем местами через Get и Set
+            // swap Get и Set
             T temp = seq->Get(0);
             seq->Set(0, seq->Get(i));
             seq->Set(i, temp);
@@ -41,7 +39,7 @@ private:
         }
 
         if (largest != i) {
-            // Меняем местами через Get и Set
+            // swap Get и Set
             T temp = seq->Get(i);
             seq->Set(i, seq->Get(largest));
             seq->Set(largest, temp);
