@@ -8,60 +8,58 @@
 #include <stdexcept>
 
 
-
 template<typename T>
 class MergeSorter : public ISorter<T> {
-    //glob
-    int a;
-    //glob
-private:
-    void merge(SmrtPtr<Sequence<T>> seq, int left, int mid, int right, int (*cmp)(const T&, const T&)) {
-        SmrtPtr<Sequence<T>> leftSeq = seq->GetSubsequence(left, mid);
-        SmrtPtr<Sequence<T>> rightSeq = seq->GetSubsequence(mid + 1, right);
 
-        int i = 0, j = 0, k = left;
-        while (i < leftSeq->GetLength() && j < rightSeq->GetLength()) {
-            if (cmp(leftSeq->Get(i), rightSeq->Get(j)) <= 0) {
-                seq->Set(k, leftSeq->Get(i));
+private:
+    void merge(SmrtPtr<Sequence<T>> seq, int left, int mid, int right, int (*cmp)(const T&, const T&), SmrtPtr<Sequence<T>> temp) {
+        int i = left, j = mid + 1, k = left;
+        while (i <= mid && j <= right) {
+            if (cmp(seq->Get(i), seq->Get(j)) <= 0) {
+                temp->Set(k, seq->Get(i));
                 i++;
             } else {
-                seq->Set(k, rightSeq->Get(j));
+                temp->Set(k, seq->Get(j));
                 j++;
             }
             k++;
         }
 
-        while (i < leftSeq->GetLength()) {
-            seq->Set(k, leftSeq->Get(i));
+        while (i <= mid) {
+            temp->Set(k, seq->Get(i));
             i++;
             k++;
         }
 
-        while (j < rightSeq->GetLength()) {
-            seq->Set(k, rightSeq->Get(j));
+        while (j <= right) {
+            temp->Set(k, seq->Get(j));
             j++;
             k++;
         }
+
+        // Copy back to the original sequence
+        for (int l = left; l <= right; ++l) {
+            seq->Set(l, temp->Get(l));
+        }
     }
 
-    void mergeSort(SmrtPtr<Sequence<T>> seq, int left, int right, int (*cmp)(const T&, const T&)) {
+    void mergeSort(SmrtPtr<Sequence<T>> seq, int left, int right, int (*cmp)(const T&, const T&), SmrtPtr<Sequence<T>> temp) {
 
         if (left < right) {
             int mid = left + (right - left) / 2;
-            mergeSort(seq, left, mid, cmp);
-            mergeSort(seq, mid + 1, right, cmp);
-            merge(seq, left, mid, right, cmp);
-        }
-
-        if(left==0){
-            std::cout<<"merg sort: "<<right<<" / "<<a<<"\n";
+            mergeSort(seq, left, mid, cmp, temp);
+            mergeSort(seq, mid + 1, right, cmp, temp);
+            merge(seq, left, mid, right, cmp, temp);
         }
     }
 
 public:
     SmrtPtr<Sequence<T>> Sort(SmrtPtr<Sequence<T>> seq, int (*cmp)(const T&, const T&)) override {
-        a=seq->GetLength() - 1;
-        mergeSort(seq, 0, seq->GetLength() - 1, cmp);
+        SmrtPtr<Sequence<T>> temp(new LinkedList<T>());
+        for (int i = 0; i < seq->GetLength(); ++i) {
+            temp->Append(seq->Get(i));
+        }
+        mergeSort(seq, 0, seq->GetLength() - 1, cmp, temp);
         return seq;
     }
 };
